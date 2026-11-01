@@ -1,18 +1,18 @@
 ---
 /* Startseite AVW (Entwurf). Single Page: Einstieg, Leistungen, Ablauf für
-   Insolvenzverwalter, Angebote (Links in die Shops), Kontakt.
+   Insolvenzverwalter, Warengruppen + Weg in den Shop, Kontakt.
 
    Angebote: KEIN automatischer Abruf – Kleinanzeigen bietet keine Schnittstelle
-   und verbietet Einbetten/Auslesen. Die Kacheln sind feste Warengruppen und
-   verlinken in den Kleinanzeigen-Shop; gekauft wird dort. (eBay ließe sich
-   später über die offizielle Browse-API automatisch ergänzen.) */
+   und verbietet Einbetten/Auslesen. Die Anhänger zeigen nur, WAS verkauft wird;
+   der eine Weg zu den aktuellen Angeboten ist der Shop-Knopf (gekauft wird
+   dort). Überarbeitet nach Impeccable-Critique (22/32) am 01.11.2026. */
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import { company, links, services, categories } from '../data/site';
 
 const steps = [
-  { title: 'Anfrage', text: 'Sie schildern kurz Objekt, Umfang und Zeitrahmen – telefonisch oder per Nachricht.' },
-  { title: 'Besichtigung & Angebot', text: 'Wir sehen uns die Räume und das Inventar an und nennen Ihnen einen festen Betrag.' },
+  { title: 'Anfrage', text: 'Sie schildern kurz Objekt, Umfang und Zeitrahmen – am einfachsten telefonisch.' },
+  { title: 'Besichtigung & Angebot', text: 'Wir sehen uns Räume und Inventar an und nennen Ihnen einen festen Betrag.' },
   { title: 'Beräumung & Verwertung', text: 'Wir räumen termingerecht und übernehmen die Verwertung der Gegenstände.' },
 ];
 ---
@@ -20,35 +20,36 @@ const steps = [
 <Base>
   <!-- ============================ EINSTIEG ============================ -->
   <section class="relative overflow-hidden bg-asphalt-900 text-white">
-    <div class="container-page relative grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.25fr_0.75fr] lg:py-28">
+    <div class="container-page relative grid items-center gap-14 py-14 sm:py-20 lg:grid-cols-[1.2fr_0.8fr] lg:py-28">
       <div>
-        <h1 class="text-5xl !text-white sm:text-6xl lg:text-7xl">
+        <h1 class="text-[3.25rem] !text-white sm:text-7xl lg:text-8xl">
           Beräumen. Verwerten. <span class="text-signal-400">Einlagern.</span>
         </h1>
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-steel-100">
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-steel-100 sm:text-xl">
           Für Insolvenzverwalter und Betriebe am Niederrhein übernehmen wir Betriebs-
           und Geschäftsausstattung, Maschinen und Fahrzeuge – und bringen sie wieder in
           Umlauf. Seit {company.since}, aus {company.city}.
         </p>
         <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-          <a href="#angebote" class="btn btn-signal">
-            Aktuelle Angebote
+          <a href="#kontakt" class="btn btn-signal">
+            Beräumung anfragen
             <Icon name="arrow" class="h-5 w-5" />
           </a>
-          <a href="#kontakt" class="btn btn-ghost-dark">Beräumung anfragen</a>
+          <a href="#angebote" class="btn btn-ghost-dark">Was wir verkaufen</a>
         </div>
       </div>
 
-      <!-- Inventar-Anhänger als Visitenkarte -->
-      <div class="mx-auto w-full max-w-xs lg:max-w-sm" aria-hidden="true">
+      <!-- Inventar-Anhänger als Visitenkarte, hängt an einem Haken -->
+      <div class="relative mx-auto w-full max-w-xs pt-2 sm:max-w-sm lg:max-w-md" aria-hidden="true">
+        <span class="hook"></span>
         <div class="tag-wrap hero-tag">
-          <div class="tag text-asphalt-900">
-            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Inventar-Nr.</p>
-            <p class="font-[family-name:var(--font-display)] text-4xl font-extrabold [font-stretch:78%]">AVW-{company.since}</p>
-            <div class="mt-4 space-y-2 border-t border-dashed border-steel-300 pt-4 text-sm">
+          <div class="tag px-7 pb-7 text-asphalt-900 sm:px-9">
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-asphalt-700">Inventar-Nr.</p>
+            <p class="font-[family-name:var(--font-display)] text-5xl font-extrabold [font-stretch:78%] sm:text-6xl">AVW-{company.since}</p>
+            <div class="mt-5 space-y-2.5 border-t border-dashed border-steel-300 pt-5 text-sm sm:text-base">
               <p class="flex justify-between gap-4"><span class="text-muted">Sitz</span><span class="font-semibold">{company.city}</span></p>
               <p class="flex justify-between gap-4"><span class="text-muted">Warenstandort</span><span class="font-semibold">Emmerich</span></p>
-              <p class="flex justify-between gap-4"><span class="text-muted">Zustand</span><span class="font-semibold">sofort verfügbar</span></p>
+              <p class="flex justify-between gap-4"><span class="text-muted">Einsatzgebiet</span><span class="font-semibold">Niederrhein</span></p>
             </div>
           </div>
         </div>
@@ -58,11 +59,11 @@ const steps = [
   </section>
 
   <!-- ============================ LEISTUNGEN ============================ -->
-  <section id="leistungen" class="scroll-mt-20 py-16 sm:py-24">
+  <section id="leistungen" class="scroll-mt-28 py-16 sm:py-24">
     <div class="container-page grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
       <div>
         <h2 class="text-4xl sm:text-5xl">Was wir für Sie übernehmen</h2>
-        <p class="mt-5 max-w-md text-lg text-muted">
+        <p class="mt-5 max-w-md text-lg text-asphalt-700">
           Von der leeren Halle bis zum verkauften Gabelstapler: alles aus einer Hand,
           ohne dass Sie sich um Abtransport oder Käufer kümmern müssen.
         </p>
@@ -83,92 +84,103 @@ const steps = [
     </div>
   </section>
 
-  <!-- ===================== FÜR INSOLVENZVERWALTER ===================== -->
-  <section class="bg-asphalt-800 py-16 text-white sm:py-20">
+  <!-- ===================== ABLAUF (Insolvenzverwalter) ===================== -->
+  <section class="bg-asphalt-800 py-16 text-white sm:py-24">
     <div class="container-page">
       <h2 class="max-w-2xl text-4xl !text-white sm:text-5xl">So läuft eine Beräumung ab</h2>
       <p class="mt-5 max-w-2xl text-lg text-steel-100">
         Viele Insolvenzverwalter arbeiten seit Jahren mit uns zusammen. Für neue
         Auftraggeber sieht der Weg so aus:
       </p>
-      <ol class="mt-12 grid gap-8 md:grid-cols-3 md:gap-6">
+      {/* Die Reihenfolge trägt Information – daher sichtbare Schrittnummern. */}
+      <ol class="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
         {steps.map((step, i) => (
-          <li class="relative border-t-4 border-signal-400 pt-5">
-            <span class="sr-only">Schritt {i + 1}: </span>
-            <h3 class="text-2xl !text-white">{step.title}</h3>
+          <li class="border-t-4 border-signal-400 pt-5">
+            <p class="font-[family-name:var(--font-display)] text-6xl font-extrabold leading-none text-signal-400 [font-stretch:78%]" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="mt-4 text-2xl !text-white sm:text-3xl"><span class="sr-only">Schritt {i + 1}: </span>{step.title}</h3>
             <p class="mt-2 text-steel-100">{step.text}</p>
           </li>
         ))}
       </ol>
+      <div class="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <a href={`tel:${company.mobileHref}`} class="btn btn-signal self-start">
+          <Icon name="phone" class="h-5 w-5" />
+          Beräumung besprechen
+        </a>
+        <p class="text-sm text-steel-300">{company.owner} · {company.mobileLabel}</p>
+      </div>
     </div>
   </section>
 
-  <!-- ============================ ANGEBOTE ============================ -->
-  <section id="angebote" class="scroll-mt-20 bg-steel-100 py-16 sm:py-24">
+  <!-- ============================ WARENGRUPPEN + SHOP ============================ -->
+  <section id="angebote" class="scroll-mt-28 overflow-hidden bg-steel-100 py-16 sm:py-24">
     <div class="container-page">
-      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <h2 class="text-4xl sm:text-5xl">Was wir verkaufen</h2>
+      <p class="mt-5 max-w-2xl text-lg text-asphalt-700">
+        Aus Insolvenzen und Firmenauflösungen kommen laufend neue Posten dazu – vom
+        Baggerzubehör bis zum Schwerlastregal. Die aktuellen Angebote stehen in unserem
+        Kleinanzeigen-Shop.
+      </p>
+
+      {/* Mobil: Anhänger zum Wischen an einer Stange; ab sm Raster. Reine Information
+          (keine Links), damit es nur EINEN Weg in den Shop gibt. */}
+      <ul class="-mx-5 mt-14 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-6 pt-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-y-10 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4" aria-label="Warengruppen">
+        {categories.map((c) => (
+          <li class="tag-wrap rail-item w-[78%] flex-none snap-center sm:w-auto">
+            <div class="tag h-full text-asphalt-900">
+              <div class="flex items-start justify-between gap-3">
+                <h3 class="text-2xl">{c.title}</h3>
+                <Icon name={c.icon} class="mt-0.5 h-8 w-8 flex-none text-signal-600" />
+              </div>
+              <p class="mt-2 text-sm text-asphalt-700">{c.examples}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-1 text-center text-xs text-muted sm:hidden">← wischen →</p>
+
+      <!-- Der eine Weg zu den aktuellen Angeboten -->
+      <div class="mt-12 flex flex-col gap-6 rounded-lg bg-asphalt-900 p-6 text-white sm:p-8 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 class="text-4xl sm:text-5xl">Aktuelle Angebote</h2>
-          <p class="mt-5 max-w-2xl text-lg text-muted">
-            Unser Bestand wechselt laufend – immer wieder kommen neue Posten aus
-            Insolvenzen und Firmenauflösungen dazu. Alle verfügbaren Angebote finden Sie
-            in unserem Kleinanzeigen-Shop.
+          <p class="font-[family-name:var(--font-display)] text-3xl font-extrabold [font-stretch:78%] sm:text-4xl">Alle aktuellen Angebote</p>
+          <p class="mt-2 max-w-xl text-steel-100">
+            Fragen, Verhandeln und Kaufen laufen direkt über Kleinanzeigen – mit allen
+            gewohnten Funktionen der Plattform.
           </p>
         </div>
-        <a href={links.kleinanzeigen} target="_blank" rel="noopener" class="btn btn-dark self-start lg:self-auto">
-          Zum Kleinanzeigen-Shop
-          <Icon name="arrow" class="h-5 w-5" />
-        </a>
-      </div>
-
-      <!-- Stange, an der die Anhänger hängen -->
-      <div class="relative mt-14">
-        <div class="absolute inset-x-0 top-0 h-2 rounded-full bg-asphalt-700 shadow-[0_3px_0_rgb(17_19_22/0.15)]" aria-hidden="true"></div>
-        <ul class="grid gap-x-6 gap-y-4 pt-1 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((c) => (
-            <li class="tag-wrap">
-              <a href={links.kleinanzeigen} target="_blank" rel="noopener" class="tag group h-full text-asphalt-900">
-                <span class="flex items-start justify-between gap-3">
-                  <h3 class="text-2xl">{c.title}</h3>
-                  <Icon name={c.icon} class="mt-0.5 h-8 w-8 flex-none text-signal-600" />
-                </span>
-                <p class="mt-2 text-sm text-muted">{c.examples}</p>
-                <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-bold">
-                  <span class="text-link-signal">Im Shop ansehen</span>
-                  <Icon name="arrow" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="mt-12 flex flex-col gap-4 border-t border-steel-300 pt-8 sm:flex-row sm:items-center sm:justify-between">
-        <p class="max-w-xl text-sm text-muted">
-          Fragen, Verhandeln und Kaufen laufen direkt über Kleinanzeigen bzw. eBay –
-          mit allen gewohnten Funktionen der Plattform.
-        </p>
-        <a href={links.ebay} target="_blank" rel="noopener" class="text-link-signal self-start text-asphalt-900 sm:self-auto">Auch auf eBay</a>
+        <div class="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
+          <a href={links.kleinanzeigen} target="_blank" rel="noopener" class="btn btn-signal">
+            Zum Kleinanzeigen-Shop
+            <Icon name="external" class="h-5 w-5" />
+            <span class="sr-only">(öffnet in neuem Tab)</span>
+          </a>
+          <a href={links.ebay} target="_blank" rel="noopener" class="btn btn-ghost-dark">
+            Auch auf eBay
+            <Icon name="external" class="h-4 w-4" />
+            <span class="sr-only">(öffnet in neuem Tab)</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ============================ KONTAKT ============================ -->
-  <section id="kontakt" class="scroll-mt-20 py-16 sm:py-24">
+  <section id="kontakt" class="scroll-mt-28 py-16 sm:py-24">
     <div class="container-page grid gap-12 lg:grid-cols-2 lg:gap-20">
       <div>
         <h2 class="text-4xl sm:text-5xl">Sprechen Sie uns an</h2>
-        <p class="mt-5 max-w-md text-lg text-muted">
-          Ob Beräumung, Einlagerung oder Frage zu einem Angebot – am schnellsten geht es
-          telefonisch.
+        <p class="mt-5 max-w-md text-lg text-asphalt-700">
+          Ob Beräumung, Einlagerung oder Frage zu einem Angebot – am schnellsten erreichen
+          Sie {company.owner} direkt am Telefon.
         </p>
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-          <a href={`tel:${company.mobileHref}`} class="btn btn-signal">
-            <Icon name="phone" class="h-5 w-5" />
-            {company.mobileLabel}
+        <div class="mt-8 grid gap-3 sm:max-w-md sm:grid-cols-2">
+          <a href={`tel:${company.mobileHref}`} class="btn btn-signal flex-col !items-start gap-0 py-3">
+            <span class="text-xs font-semibold uppercase tracking-wide">Mobil · direkt</span>
+            <span class="text-lg">{company.mobileLabel}</span>
           </a>
-          <a href={`tel:${company.phoneHref}`} class="btn border border-asphalt-700 text-asphalt-900 hover:bg-steel-100">
-            {company.phoneLabel}
+          <a href={`tel:${company.phoneHref}`} class="btn flex-col !items-start gap-0 border border-asphalt-700 py-3 text-asphalt-900 hover:bg-steel-100">
+            <span class="text-xs font-semibold uppercase tracking-wide text-asphalt-700">Büro</span>
+            <span class="text-lg">{company.phoneLabel}</span>
           </a>
         </div>
       </div>
@@ -214,8 +226,11 @@ const steps = [
       transform: rotate(0);
     }
   }
-  .hero-tag .tag-wrap::before,
   .hero-tag::before {
     background: var(--color-steel-300);
+  }
+  /* Warengruppen sind keine Links mehr – kein Schaukeln beim Drüberfahren */
+  #angebote .tag-wrap:hover .tag {
+    transform: none;
   }
 </style>

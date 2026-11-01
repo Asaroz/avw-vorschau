@@ -137,7 +137,6 @@
     border-radius: 0.5rem 0.5rem 0.75rem 0.75rem;
     background: #fff;
     clip-path: polygon(14% 0, 86% 0, 100% 9%, 100% 100%, 0 100%, 0 9%);
-    box-shadow: 0 1px 1px rgb(17 19 22 / 0.08), 0 12px 20px -10px rgb(17 19 22 / 0.35);
     transform-origin: 50% 0.8rem; /* pendelt um die Öse */
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -157,6 +156,38 @@
   .tag-wrap {
     position: relative;
     padding-top: 1.75rem;
+    /* clip-path schneidet box-shadow ab – daher Schatten als Filter am Wrapper */
+    filter: drop-shadow(0 1px 1px rgb(17 19 22 / 0.1)) drop-shadow(0 10px 10px rgb(17 19 22 / 0.18));
+  }
+  /* Stangen-Segment über jedem Anhänger; nebeneinander ergibt das pro Reihe
+     eine durchgehende Stange (auch beim mobilen Wischen). */
+  .rail-item::after {
+    content: '';
+    position: absolute;
+    top: -0.25rem;
+    left: -0.75rem;
+    right: -0.75rem;
+    height: 0.5rem;
+    background: var(--color-asphalt-700);
+  }
+  .rail-item:first-child::after {
+    left: 0;
+    border-radius: 9999px 0 0 9999px;
+  }
+  .rail-item:last-child::after {
+    right: 0;
+    border-radius: 0 9999px 9999px 0;
+  }
+  /* Haken über dem Anhänger im Einstieg */
+  .hook {
+    position: absolute;
+    top: -0.5rem;
+    left: 50%;
+    width: 2.5rem;
+    height: 0.5rem;
+    margin-left: -1.25rem;
+    border-radius: 9999px;
+    background: var(--color-steel-300);
   }
   .tag-wrap::before {
     /* Schnur vom Haken zum Anhänger */

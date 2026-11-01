@@ -3,8 +3,14 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/archivo/wdth.css';
 import '../styles/global.css';
 import Icon from '../components/Icon.astro';
-import { company } from '../data/site';
+import { company, links } from '../data/site';
 import { withBase } from '../lib/url';
+
+const navItems = [
+  { id: 'leistungen', label: 'Leistungen' },
+  { id: 'angebote', label: 'Angebote' },
+  { id: 'kontakt', label: 'Kontakt' },
+];
 
 interface Props {
   title?: string;
@@ -28,40 +34,62 @@ const pageTitle = title ? `${title} · ${company.legal}` : `${company.short} –
   <body>
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-signal-400 focus:px-4 focus:py-2 focus:text-asphalt-950">Zum Inhalt springen</a>
 
-    <div class="bg-signal-400 text-center text-xs font-semibold text-asphalt-950">
-      <p class="container-page py-1.5">Entwurf – Texte und Bilder sind noch nicht abgestimmt.</p>
+    <div class="bg-asphalt-950 text-center text-xs font-semibold text-signal-400">
+      <p class="container-page py-1.5">Entwurf – Texte noch nicht abgestimmt.</p>
     </div>
 
     <header class="sticky top-0 z-40 border-b border-white/10 bg-asphalt-900/95 text-white backdrop-blur">
-      <div class="container-page flex items-center justify-between gap-4 py-3">
-        <a href={withBase('/')} class="flex items-center gap-3" aria-label={`${company.legal} – Startseite`}>
+      <div class="container-page flex items-center justify-between gap-4 py-2.5 md:py-3">
+        <a href={withBase('/')} class="flex min-h-11 items-center gap-3" aria-label={`${company.legal} – Startseite`}>
           <span class="rounded-sm bg-signal-400 px-2 py-0.5 font-[family-name:var(--font-display)] text-2xl font-extrabold leading-tight text-asphalt-950 [font-stretch:78%]">{company.short}</span>
-          <span class="hidden text-sm font-semibold leading-tight text-steel-100 sm:block">{company.name}<br /><span class="font-normal text-steel-300">Insolvenzverwertung · {company.city}</span></span>
+          {/* Auch mobil sichtbar: „AVW" allein sagt Erstbesuchern nichts. */}
+          <span class="text-sm font-semibold leading-tight text-steel-100">{company.name}<br /><span class="font-normal text-steel-300">Insolvenzverwertung · {company.city}</span></span>
         </a>
         <nav aria-label="Hauptnavigation" class="hidden md:block">
           <ul class="flex items-center gap-1 text-sm font-semibold">
-            <li><a class="rounded px-3 py-2 text-steel-100 hover:text-signal-400" href={withBase('/#leistungen')}>Leistungen</a></li>
-            <li><a class="rounded px-3 py-2 text-steel-100 hover:text-signal-400" href={withBase('/#angebote')}>Angebote</a></li>
-            <li><a class="rounded px-3 py-2 text-steel-100 hover:text-signal-400" href={withBase('/#kontakt')}>Kontakt</a></li>
+            {navItems.map((n) => (
+              <li><a class="inline-flex min-h-11 items-center rounded px-3 text-steel-100 hover:text-signal-400" href={withBase(`/#${n.id}`)}>{n.label}</a></li>
+            ))}
           </ul>
         </nav>
-        <a href={`tel:${company.mobileHref}`} class="btn btn-signal min-h-11 px-4 text-sm">
+        <a href={`tel:${company.mobileHref}`} class="btn btn-signal hidden min-h-11 px-4 text-sm md:inline-flex">
           <Icon name="phone" class="h-4 w-4" />
           <span>Anrufen</span>
         </a>
       </div>
+      {/* Mobil: Abschnitte als Leiste unter dem Kopf statt verstecktem Menü */}
+      <nav aria-label="Abschnitte" class="border-t border-white/10 md:hidden">
+        <ul class="container-page flex justify-between text-sm font-semibold">
+          {navItems.map((n) => (
+            <li><a class="inline-flex min-h-11 items-center text-steel-100 active:text-signal-400" href={withBase(`/#${n.id}`)}>{n.label}</a></li>
+          ))}
+        </ul>
+      </nav>
     </header>
 
     <main id="main">
       <slot />
     </main>
 
-    <footer class="bg-asphalt-950 text-steel-300">
+    {/* Mobil: Aktionen im Daumenbereich */}
+    <div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-white/10 bg-asphalt-900/95 px-3 py-2.5 backdrop-blur md:hidden" style="padding-bottom: max(0.625rem, env(safe-area-inset-bottom));">
+      <a href={`tel:${company.mobileHref}`} class="btn btn-signal min-h-12 px-3 text-sm">
+        <Icon name="phone" class="h-4 w-4" />
+        Anrufen
+      </a>
+      <a href={links.kleinanzeigen} target="_blank" rel="noopener" class="btn btn-ghost-dark min-h-12 px-3 text-sm">
+        Angebote
+        <Icon name="external" class="h-4 w-4" />
+        <span class="sr-only">(öffnet Kleinanzeigen in neuem Tab)</span>
+      </a>
+    </div>
+
+    <footer class="bg-asphalt-950 pb-20 text-steel-300 md:pb-0">
       <div class="container-page flex flex-col gap-4 py-10 text-sm sm:flex-row sm:items-center sm:justify-between">
-        <p>© {new Date().getFullYear()} {company.legal} · {company.street}, {company.zip} {company.city}</p>
+        <p>© {new Date().getFullYear()} {company.legal} · {company.street}, {company.zip} {company.city} · <a class="inline-flex min-h-11 items-center hover:text-white" href={`tel:${company.phoneHref}`}>{company.phoneLabel}</a></p>
         <nav aria-label="Rechtliches" class="flex gap-5">
-          <a class="inline-block py-2 hover:text-white" href={withBase('/impressum/')}>Impressum</a>
-          <a class="inline-block py-2 hover:text-white" href={withBase('/impressum/#datenschutz')}>Datenschutz</a>
+          <a class="inline-flex min-h-11 items-center hover:text-white" href={withBase('/impressum/')}>Impressum</a>
+          <a class="inline-flex min-h-11 items-center hover:text-white" href={withBase('/impressum/#datenschutz')}>Datenschutz</a>
         </nav>
       </div>
     </footer>
