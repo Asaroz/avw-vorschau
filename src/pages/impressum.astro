@@ -1,0 +1,42 @@
+---
+/* Impressum/Datenschutz – ENTWURF. Nur Registerangaben sind belegt; der Rest
+   muss vor einem Live-Gang vollständig und rechtssicher ergänzt werden. */
+import Base from '../layouts/Base.astro';
+import { company } from '../data/site';
+---
+
+<Base title="Impressum">
+  <section class="container-page max-w-3xl py-16 sm:py-20">
+    <h1 class="text-5xl">Impressum</h1>
+    <div class="mt-10 space-y-8 text-lg">
+      <div>
+        <h2 class="text-2xl">Angaben gemäß § 5 DDG</h2>
+        <p class="mt-3">{company.legal}<br />{company.street}<br />{company.zip} {company.city}</p>
+      </div>
+      <div>
+        <h2 class="text-2xl">Vertreten durch</h2>
+        <p class="mt-3">Geschäftsführer: {company.owner}</p>
+      </div>
+      <div>
+        <h2 class="text-2xl">Kontakt</h2>
+        <p class="mt-3">Telefon: {company.phoneLabel}<br />Mobil: {company.mobileLabel}<br />E-Mail: <span class="rounded bg-signal-400 px-1.5 text-base font-semibold text-asphalt-950">OFFEN</span></p>
+      </div>
+      <div>
+        <h2 class="text-2xl">Registereintrag</h2>
+        <p class="mt-3">{company.register}</p>
+      </div>
+      <div>
+        <h2 class="text-2xl">Umsatzsteuer-ID</h2>
+        <p class="mt-3"><span class="rounded bg-signal-400 px-1.5 text-base font-semibold text-asphalt-950">OFFEN</span></p>
+      </div>
+      <div id="datenschutz" class="scroll-mt-24 border-t border-steel-300 pt-8">
+        <h2 class="text-2xl">Datenschutz</h2>
+        <p class="mt-3 text-muted">
+          Entwurf: Diese Seite setzt keine Cookies, nutzt kein Tracking und lädt keine
+          Inhalte von fremden Servern (Schriften sind lokal eingebunden). Die
+          vollständige Datenschutzerklärung wird vor dem Live-Gang ergänzt.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

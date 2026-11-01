@@ -1,0 +1,184 @@
+/* =============================================================================
+   AVW – Website-Entwurf · Globales Stylesheet (Tailwind CSS v4)
+
+   Bildwelt: Lagerhalle & Verwertung. Asphalt-/Stahltöne mit Signalgelb
+   (wie Markierungen in Halle und auf dem Hof), kräftige schmale Überschriften.
+   Leitmotiv: Inventar-Anhänger, wie sie bei der Verwertung an Posten hängen.
+   ========================================================================== */
+
+@import 'tailwindcss';
+
+@theme {
+  /* Schriften lokal über @fontsource (keine Google-Fonts-Requests) */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-display: 'Archivo Variable', 'Arial Narrow', ui-sans-serif, sans-serif;
+
+  /* Asphalt & Stahl */
+  --color-asphalt-950: #111316;
+  --color-asphalt-900: #181b1f;
+  --color-asphalt-800: #23272d;
+  --color-asphalt-700: #343a42;
+  --color-steel-500: #6b7480;
+  --color-steel-300: #b9c0c8;
+  --color-steel-100: #e6e9ec;
+  --color-steel-50: #f3f4f6;
+
+  /* Signalgelb – Flächen/Akzente; Text darauf immer Asphalt */
+  --color-signal-400: #ffc928;
+  --color-signal-500: #f5b400;
+  --color-signal-600: #c98f00;
+
+  /* Gedämpfter Text auf hellem Grund (≥ 4,5:1 auf Weiß und steel-50) */
+  --color-muted: #555d68;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+  body {
+    background: var(--color-steel-50);
+    color: var(--color-asphalt-800);
+    font-family: var(--font-sans);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-stretch: 78%;
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    color: var(--color-asphalt-950);
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-signal-400);
+    color: var(--color-asphalt-950);
+  }
+  :where(a, button, summary, [tabindex]):focus-visible {
+    outline: 3px solid var(--color-signal-500);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 74rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.4rem;
+    border-radius: 0.375rem;
+    font-weight: 700;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-signal {
+    background: var(--color-signal-400);
+    color: var(--color-asphalt-950);
+  }
+  .btn-signal:hover {
+    background: var(--color-signal-500);
+  }
+  .btn-ghost-dark {
+    border: 1px solid rgb(255 255 255 / 0.35);
+    color: #fff;
+  }
+  .btn-ghost-dark:hover {
+    background: rgb(255 255 255 / 0.1);
+  }
+  .btn-dark {
+    background: var(--color-asphalt-900);
+    color: #fff;
+  }
+  .btn-dark:hover {
+    background: var(--color-asphalt-700);
+  }
+
+  /* Inventar-Anhänger: Karton-Etikett mit Loch und Schnur */
+  .tag {
+    position: relative;
+    display: block;
+    padding: 2.25rem 1.5rem 1.5rem;
+    border-radius: 0.5rem 0.5rem 0.75rem 0.75rem;
+    background: #fff;
+    clip-path: polygon(14% 0, 86% 0, 100% 9%, 100% 100%, 0 100%, 0 9%);
+    box-shadow: 0 1px 1px rgb(17 19 22 / 0.08), 0 12px 20px -10px rgb(17 19 22 / 0.35);
+    transform-origin: 50% 0.8rem; /* pendelt um die Öse */
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tag::before {
+    /* Ösen-Loch */
+    content: '';
+    position: absolute;
+    top: 0.85rem;
+    left: 50%;
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-left: -0.45rem;
+    border-radius: 9999px;
+    background: var(--color-steel-50);
+    box-shadow: inset 0 0 0 3px var(--color-signal-500);
+  }
+  .tag-wrap {
+    position: relative;
+    padding-top: 1.75rem;
+  }
+  .tag-wrap::before {
+    /* Schnur vom Haken zum Anhänger */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 2.7rem;
+    background: var(--color-asphalt-700);
+    transform: translateX(-50%);
+  }
+  .tag-wrap:hover .tag,
+  .tag-wrap:focus-within .tag {
+    transform: rotate(-2.5deg);
+  }
+
+  .text-link-signal {
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--color-signal-500);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 0.25em;
+  }
+}

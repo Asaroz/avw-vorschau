@@ -1,0 +1,19 @@
+{
+  "name": "avw-entwurf",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Website-Entwurf fuer AVW – Alden Vermarktung West GmbH, Rees (Insolvenzverwertung)",
+  "scripts": {
+    "dev": "astro dev --port 4322",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource-variable/archivo": "5.3.0",
+    "@fontsource-variable/inter": "5.2.8",
+    "@tailwindcss/vite": "4.3.1",
+    "astro": "7.0.0",
+    "tailwindcss": "4.3.1"
+  }
+}
